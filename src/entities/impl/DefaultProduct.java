@@ -1,8 +1,9 @@
 package entities.impl;
+
 import entities.Product;
 
 public class DefaultProduct implements Product {
-	
+
 	private int id;
 	private String productName;
 	private String categoryName;
@@ -10,15 +11,19 @@ public class DefaultProduct implements Product {
 
 	public DefaultProduct() {
 	}
-	
+
 	public DefaultProduct(int id, String productName, String categoryName, double price) {
-		// <write your code here>
+		super();
+		this.id = id;
+		this.productName = productName;
+		this.categoryName = categoryName;
+		this.price = price;
 	}
 
 	@Override
 	public String toString() {
-		// <write your code here>
-		return null;
+		return "Product id=" + id + ", product name=" + productName + ", category name=" + categoryName + ", price="
+				+ price;
 	}
 
 	@Override
@@ -31,5 +36,4 @@ public class DefaultProduct implements Product {
 		return this.productName;
 	}
 
-	
 }
