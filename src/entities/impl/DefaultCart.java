@@ -54,7 +54,7 @@ public class DefaultCart implements Cart {
 
 	@Override
 	public void clear() {
-		// <write your code here>
+		products = new Product[DEFAULT_CART_CAPACITY];
 	}
 
 }
