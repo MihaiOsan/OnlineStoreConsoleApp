@@ -1,5 +1,7 @@
 package services.impl;
 
+import java.util.Arrays;
+
 import entities.User;
 import services.UserManagementService;
 
@@ -12,16 +14,45 @@ public class DefaultUserManagementService implements UserManagementService {
 	private static final int DEFAULT_USERS_CAPACITY = 10;
 
 	private static DefaultUserManagementService instance;
-
-	// <write your code here>
+	
+	private User[] users;
+	private int lastUserIndex;
+	
+	{
+		users = new User[DEFAULT_USERS_CAPACITY];
+	}
 
 	private DefaultUserManagementService() {
 	}
 
 	@Override
 	public String registerUser(User user) {
-		// <write your code here>
-		return null;
+		
+		if (user == null)
+			return NO_ERROR_MESSAGE;
+		
+		String errorMessage = checkUniqueEmail(user.getEmail());
+		
+		if (errorMessage != null && !errorMessage.isEmpty()) {
+			return errorMessage;
+		}
+		
+		if (users.length <= lastUserIndex) {
+			users = Arrays.copyOf(users, users.length << 1);
+		}
+		
+		users[lastUserIndex++] = user;
+		return NO_ERROR_MESSAGE;
+	}
+	
+	private String checkUniqueEmail(String email) {
+		if (email == null || email == "")
+			return EMPTY_EMAIL_ERROR_MESSAGE;
+		for (User u : users) {
+			if (u.getEmail().equalsIgnoreCase(email))
+				return NOT_UNIQUE_EMAIL_ERROR_MESSAGE;
+		}
+		return NO_ERROR_MESSAGE;
 	}
 
 	public static UserManagementService getInstance() {
@@ -30,20 +61,40 @@ public class DefaultUserManagementService implements UserManagementService {
 		}
 		return instance;
 	}
+	
 
 	@Override
 	public User[] getUsers() {
-		// <write your code here>
-		return null;
+		int notNullUsersAmount = 0;
+		for (User user : users) {
+			if (user != null) {
+				notNullUsersAmount++;
+			}
+		}
+		
+		User[] notNullUsers = new User[notNullUsersAmount];
+		
+		int index = 0;
+		for (User user : users) {
+			if (user != null) {
+				notNullUsers[index++] = user;
+			}
+		}
+		return notNullUsers;
 	}
 
 	@Override
 	public User getUserByEmail(String userEmail) {
-		// <write your code here>
+		for (User user : users) {
+			if (user != null && user.getEmail().equalsIgnoreCase(userEmail)) {
+				return user;
+			}
+		}
 		return null;
 	}
 
 	void clearServiceState() {
-		// <write your code here>
+		lastUserIndex = 0;
+		users = new User[DEFAULT_USERS_CAPACITY];
 	}
 }
