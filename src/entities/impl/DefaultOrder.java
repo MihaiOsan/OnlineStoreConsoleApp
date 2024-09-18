@@ -15,8 +15,9 @@ public class DefaultOrder implements Order {
 
 	@Override
 	public boolean isCreditCardNumberValid(String creditCardNumber) {
-		return this.creditCardNumber.length() == AMOUNT_OF_DIGITS_IN_CREDIT_CARD_NUMBER
-				&& this.creditCardNumber.matches("(\\d)*");
+		return creditCardNumber.length() == AMOUNT_OF_DIGITS_IN_CREDIT_CARD_NUMBER
+				&& 
+				!creditCardNumber.contains(" ") && Long.parseLong(creditCardNumber) > 0;
 	}
 
 	@Override

@@ -1,5 +1,7 @@
 package menu.impl;
 
+import java.util.Scanner;
+
 import configs.ApplicationContext;
 import menu.Menu;
 
@@ -13,12 +15,17 @@ public class ChangePasswordMenu implements Menu {
 
 	@Override
 	public void start() {
-		// <write your code here>
+		printMenuHeader();
+		Scanner sc = new Scanner(System.in);
+		String userInput = sc.next();
+		context.getLoggedInUser().setPassword(userInput);
+		System.out.println("Your password has been successfully changed");
 	}
 
 	@Override
 	public void printMenuHeader() {
-		// <write your code here>
+		System.out.println("***** CHANGE PASSWORD *****");
+		System.out.print("Enter new password: ");		
 	}
 
 }

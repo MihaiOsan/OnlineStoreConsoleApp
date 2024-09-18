@@ -1,6 +1,7 @@
 package menu.impl;
 
 import configs.ApplicationContext;
+import entities.User;
 import menu.Menu;
 import services.UserManagementService;
 import services.impl.DefaultUserManagementService;
@@ -17,12 +18,21 @@ public class CustomerListMenu implements Menu {
 
 	@Override
 	public void start() {
-		// <write your code here>
+		printMenuHeader();
+		User[] users = userManagementService.getUsers();
+		
+		if (users.length == 0) {
+			System.out.println("Unfortunately, there are no customers.");
+		} else {
+			for (User user : users) {
+				System.out.println(user);
+			}
+		}
 	}
 
 	@Override
 	public void printMenuHeader() {
-		// <write your code here>
+		System.out.println("***** USERS *****");
 	}
 
 }

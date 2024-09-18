@@ -1,7 +1,10 @@
 package menu.impl;
 
+import java.util.Scanner;
+
 import configs.ApplicationContext;
 import menu.Menu;
+import entities.Order;
 import services.OrderManagementService;
 import services.impl.DefaultOrderManagementService;
 
@@ -13,16 +16,38 @@ public class MyOrdersMenu implements Menu {
 	{
 		context = ApplicationContext.getInstance();
 		orderManagementService = DefaultOrderManagementService.getInstance();
-	}
-
+}
+	
 	@Override
 	public void start() {
-		// <write your code here>
+		printMenuHeader();
+		if (context.getLoggedInUser() == null) {
+			System.out.println(
+					"Please, log in or create new account to see list of your orders");
+			new MainMenu().start();
+			return;
+		} else {
+			printUserOrdersToConsole();
+		}
+	}
+
+	private void printUserOrdersToConsole() {
+		Order[] loggedInUserOrders = orderManagementService
+				.getOrdersByUserId(context.getLoggedInUser().getId());
+
+		if (loggedInUserOrders == null || loggedInUserOrders.length == 0) {
+			System.out.println(
+					"Unfortunately, you don't have any orders yet. "
+					+ "Navigate back to main menu to place a new order");
+		} else {
+			for (Order order : loggedInUserOrders) {
+				System.out.println(order);
+			}
+		}
 	}
 
 	@Override
 	public void printMenuHeader() {
-		// <write your code here>
+		System.out.println("***** MY ORDERS *****");		
 	}
-
 }

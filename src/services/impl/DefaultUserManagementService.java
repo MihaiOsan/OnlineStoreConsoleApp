@@ -46,10 +46,10 @@ public class DefaultUserManagementService implements UserManagementService {
 	}
 	
 	private String checkUniqueEmail(String email) {
-		if (email == null || email == "")
+		if (email == null || email.isEmpty())
 			return EMPTY_EMAIL_ERROR_MESSAGE;
 		for (User u : users) {
-			if (u.getEmail().equalsIgnoreCase(email))
+			if (u!= null && u.getEmail() != null && u.getEmail().equalsIgnoreCase(email))
 				return NOT_UNIQUE_EMAIL_ERROR_MESSAGE;
 		}
 		return NO_ERROR_MESSAGE;

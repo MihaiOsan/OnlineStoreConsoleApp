@@ -1,5 +1,7 @@
 package menu.impl;
 
+import java.util.Scanner;
+
 import configs.ApplicationContext;
 import menu.Menu;
 
@@ -15,12 +17,49 @@ public class SettingsMenu implements Menu {
 
 	@Override
 	public void start() {
-		// <write your code here>
+		Menu menuToNavigate = null;
+		mainLoop: for (;;) {
+			printMenuHeader();
+			if (context.getLoggedInUser() == null) {
+				System.out.println("Please, log in or create new account to change your account settings");
+				new MainMenu().start();
+				return;
+			} else {
+				System.out.println(SETTINGS);
+				System.out.print("Please, enter option or type 'menu' to navigate back to the main menu: ");
+				Scanner sc = new Scanner(System.in);
+				String userInput = sc.next();
+
+				if (userInput.equalsIgnoreCase(MainMenu.MENU_COMMAND)) {
+					menuToNavigate = new MainMenu();
+					break mainLoop;
+				}
+
+				int userOption = Integer.parseInt(userInput);
+
+				switch (userOption) {
+
+				case 1:
+					menuToNavigate = new ChangePasswordMenu();
+					break mainLoop;
+
+				case 2:
+					menuToNavigate = new ChangeEmailMenu();
+					break mainLoop;
+
+				default:
+					System.out.println("Only 1, 2 is allowed. Try one more time");
+					continue;
+				}
+			}
+
+		}
+		menuToNavigate.start();
 	}
 
 	@Override
 	public void printMenuHeader() {
-		// <write your code here>
+		System.out.println("***** SETTINGS *****");
 	}
 
 }
